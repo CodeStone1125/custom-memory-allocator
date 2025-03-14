@@ -1,4 +1,4 @@
-SRC = src/memory_allocator.c src/main.c
+SRC = src/memory_allocator.c
 OBJ = build/memory_allocator.o build/main.o
 TARGET = build/memory_allocator
 

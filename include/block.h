@@ -1,11 +1,3 @@
-/******************************************************************************
-
-                            Online C Compiler.
-                Code, Compile, Run and Debug C program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -14,9 +6,11 @@ Write your code in this editor and press "Run" button to compile and execute it.
 typedef struct block {
     size_t size;
     struct block *l, *r;
+    char * freechunk;
 } block_t;
 
-block_t **find_free_tree(block_t **root, block_t *target)
+
+inline block_t **find_free_tree(block_t **root, block_t *target)
 {
     if(*root == NULL) return NULL;
     block_t **ptr = root;
@@ -32,7 +26,7 @@ block_t **find_free_tree(block_t **root, block_t *target)
     return NULL;
 }
 
-block_t *find_predecessor_free_tree(block_t **root, block_t *node)
+inline block_t *find_predecessor_free_tree(block_t **root, block_t *node)
 {
     block_t **ptr = find_free_tree(root, node);
 
@@ -54,7 +48,7 @@ block_t *find_predecessor_free_tree(block_t **root, block_t *node)
  * The free tree is a binary search tree that organizes free blocks (of type block_t)
  * to efficiently locate a block of appropriate size during memory allocation.
  */
-void remove_free_tree(block_t **root, block_t *target)
+inline void remove_free_tree(block_t **root, block_t *target)
 {
     /* Locate the pointer to the target node in the tree. */
     block_t **node_ptr = find_free_tree(root, target);
@@ -109,7 +103,7 @@ void remove_free_tree(block_t **root, block_t *target)
     target->r = NULL;
 }
 
-void insert_free_tree(block_t **root, block_t *target){
+inline void insert_free_tree(block_t **root, block_t *target){
     block_t ** ptr = root;
     while((*ptr)){
         if(target->size > (*ptr)->size){
@@ -122,28 +116,7 @@ void insert_free_tree(block_t **root, block_t *target){
     return;
 }
 
-
-block_t* new_block(size_t size) {
-    block_t* node = (block_t*)malloc(sizeof(block_t));
-    node->size = size;
-    node->l = node->r = NULL;
-    return node;
-}
-
-
-block_t* create_tree() {
-    block_t* root = NULL;
-    insert_free_tree(&root, new_block(4));
-    insert_free_tree(&root, new_block(5));
-    insert_free_tree(&root, new_block(5));
-    insert_free_tree(&root, new_block(3));
-    insert_free_tree(&root, new_block(3));
-    insert_free_tree(&root, new_block(6));
-    
-    return root;
-}
-
-void print_level_order_with_spacing(block_t* root) {
+inline void print_level_order_with_spacing(block_t* root) {
     if (root == NULL) return;
 
     // 使用隊列來執行層級遍歷，並記錄每層的節點
